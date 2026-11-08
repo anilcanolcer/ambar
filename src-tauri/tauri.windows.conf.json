@@ -1,0 +1,17 @@
+{
+  "app": {
+    "windows": [
+      {
+        "label": "main",
+        "title": "Ambar",
+        "width": 880,
+        "height": 730,
+        "minWidth": 680,
+        "minHeight": 560,
+        "center": true,
+        "dragDropEnabled": false,
+        "preventOverflow": true
+      }
+    ]
+  }
+}

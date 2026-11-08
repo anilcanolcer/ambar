@@ -1,0 +1,30 @@
+node_modules/
+dist/
+src-tauri/target/
+src-tauri/gen/
+.DS_Store
+*.log
+
+# Local tool and editor settings: every hidden folder at the top level,
+# except the GitHub one
+/.*/
+!/.github/
+
+# Design explorations and mockups (not published)
+/design/
+
+# Output of npm run release
+/release/
+
+# Secrets: signing keys and environment files never go into the repo
+*.key
+.env
+.env.*
+
+# Python leftovers from the icon scripts
+__pycache__/
+*.pyc
+
+# Ambar imzalama anahtarı hiçbir zaman depoya girmez
+ambar-signing.key
+ambar-signing.key.pub

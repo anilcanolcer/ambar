@@ -1,0 +1,68 @@
+[package]
+name = "kova"
+version = "0.1.0"
+description = "Reklamsız, ücretsiz medya indirici"
+authors = ["Alp"]
+license = "MIT"
+edition = "2021"
+rust-version = "1.90"
+
+[build-dependencies]
+tauri-build = { version = "2", features = [] }
+
+[dependencies]
+tauri = { version = "2", features = ["tray-icon", "image-png"] }
+tauri-plugin-dialog = "2"
+tauri-plugin-opener = "2"
+# One-click Kova updates from GitHub Releases, checked against our signing key.
+# System TLS like the engine downloads; "zip" only unpacks Tauri v1 updates.
+tauri-plugin-updater = { version = "2", default-features = false, features = ["native-tls"] }
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+tokio = { version = "1", features = ["process", "io-util", "sync", "fs", "time", "macros", "rt-multi-thread"] }
+reqwest = { version = "0.12", default-features = false, features = ["native-tls", "stream"] }
+futures-util = "0.3"
+sha2 = "0.10"
+hex = "0.4"
+thiserror = "2"
+libc = "0.2"
+
+[target.'cfg(target_os = "macos")'.dependencies]
+objc2 = "0.6"
+
+[target.'cfg(windows)'.dependencies]
+# A second launch brings the running Kova forward instead of starting another.
+tauri-plugin-single-instance = "2"
+# Says that downloads finished while the window sits in the tray, where it
+# has no taskbar button to flash (macOS bounces the Dock icon instead).
+tauri-plugin-notification = "2"
+# Engine archives are unpacked in-process; macOS uses ditto instead.
+zip = { version = "9", default-features = false, features = ["deflate"] }
+windows-sys = { version = "0.61", features = [
+  "Win32_Foundation",
+  "Win32_Security",
+  "Win32_System_JobObjects",
+  "Win32_System_Threading",
+  "Win32_System_DataExchange",
+  "Win32_System_Memory",
+  "Win32_System_Ole",
+  "Win32_System_Registry",
+  "Win32_UI_WindowsAndMessaging",
+  "Win32_Graphics_Gdi",
+  "Win32_System_Console",
+] }
+
+[dev-dependencies]
+tempfile = "3"
+
+[profile.dev]
+# Skipping debug info keeps target/ small.
+debug = 0
+incremental = true
+
+[profile.release]
+codegen-units = 1
+lto = true
+opt-level = "s"
+panic = "abort"
+strip = true

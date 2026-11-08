@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+  <!-- Lets macOS show its own panels and context menus (folder picker,
+       right-click in the link field) in Turkish. -->
+  <key>CFBundleDevelopmentRegion</key>
+  <string>tr</string>
+  <key>CFBundleLocalizations</key>
+  <array>
+    <string>tr</string>
+  </array>
+  <!-- Shown by macOS the first time the menu bar icon reads the page open
+       in the browser. -->
+  <key>NSAppleEventsUsageDescription</key>
+  <string>Ambar, menü çubuğundan indirirken tarayıcında açık olan videonun adresini okur.</string>
+</dict>
+</plist>
