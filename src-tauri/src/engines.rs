@@ -627,38 +627,87 @@ async fn download_artifacts(
     let mut paths = Vec::new();
     let mut last_emit = Instant::now() - Duration::from_secs(1);
     for (index, artifact) in rel.artifacts.iter().enumerate() {
-        let resp = net.client.get(&artifact.url).send().await?.error_for_status()?;
-        let total = resp.content_length();
         let path = dir.join(&artifact.file_name);
-        let mut file = tokio::fs::File::create(&path).await?;
-        let mut hasher = Sha256::new();
-        let mut stream = resp.bytes_stream();
-        let mut this_file = 0u64;
-        while let Some(chunk) = stream.next().await {
-            let chunk = chunk?;
-            hasher.update(&chunk);
-            file.write_all(&chunk).await?;
-            this_file += chunk.len() as u64;
-            downloaded += chunk.len() as u64;
-            if last_emit.elapsed() >= Duration::from_millis(120) {
-                last_emit = Instant::now();
-                let within = total.map(|t| (this_file as f64 / t.max(1) as f64).min(1.0)).unwrap_or(0.0);
-                progress(EngineProgress {
-                    downloaded,
-                    fraction: Some((index as f64 + within) / count),
-                    ..EngineProgress::new(rel.id, Phase::Downloading)
-                });
+        // Gyan publishes the same release archive on GitHub. The publisher's
+        // server can be very slow for some routes, so use its CDN mirror first.
+        // Both sources are checked against the checksum from gyan.dev.
+        let urls = if cfg!(windows) && rel.id == EngineId::Ffmpeg {
+            vec![
+                format!(
+                    "https://github.com/GyanD/codexffmpeg/releases/download/{}/{}",
+                    rel.version, artifact.file_name
+                ),
+                artifact.url.clone(),
+            ]
+        } else {
+            vec![artifact.url.clone()]
+        };
+        let mut completed = false;
+        for (attempt, url) in urls.iter().enumerate() {
+            let switch_if_slow = attempt + 1 < urls.len();
+            let result = async {
+                let resp = net.client.get(url).send().await?.error_for_status()?;
+                let total = resp.content_length();
+                let mut file = tokio::fs::File::create(&path).await?;
+                let mut hasher = Sha256::new();
+                let mut stream = resp.bytes_stream();
+                let mut this_file = 0u64;
+                let started = Instant::now();
+                while let Some(chunk) = if switch_if_slow {
+                    tokio::time::timeout(Duration::from_secs(12), stream.next())
+                        .await
+                        .map_err(|_| msg("FFmpeg indirmesi yanıt vermiyor; alternatif kaynak deneniyor."))?
+                } else {
+                    stream.next().await
+                } {
+                    let chunk = chunk?;
+                    hasher.update(&chunk);
+                    file.write_all(&chunk).await?;
+                    this_file += chunk.len() as u64;
+                    // Avoid making a user wait minutes on a poor CDN route.
+                    if switch_if_slow && started.elapsed() >= Duration::from_secs(15)
+                        && this_file < 256 * 1024 * started.elapsed().as_secs()
+                    {
+                        return Err(msg("FFmpeg indirmesi yavaş; alternatif kaynak deneniyor."));
+                    }
+                    if last_emit.elapsed() >= Duration::from_millis(120) {
+                        last_emit = Instant::now();
+                        let within = total.map(|t| (this_file as f64 / t.max(1) as f64).min(1.0)).unwrap_or(0.0);
+                        progress(EngineProgress {
+                            downloaded: downloaded + this_file,
+                            fraction: Some((index as f64 + within) / count),
+                            ..EngineProgress::new(rel.id, Phase::Downloading)
+                        });
+                    }
+                }
+                file.flush().await?;
+                drop(file);
+                let actual = hex::encode(hasher.finalize());
+                if !actual.eq_ignore_ascii_case(&artifact.sha256) {
+                    return Err(msg(format!(
+                        "{} doğrulanamadı: dosya özeti yayınlanan özetle uyuşmuyor. Tekrar dene.",
+                        artifact.file_name
+                    )));
+                }
+                Ok::<u64, crate::error::AppError>(this_file)
+            }.await;
+            match result {
+                Ok(size) => {
+                    downloaded += size;
+                    completed = true;
+                    break;
+                }
+                Err(error) if switch_if_slow => {
+                    progress(EngineProgress {
+                        message: Some("Alternatif kaynaktan indiriliyor".into()),
+                        ..EngineProgress::new(rel.id, Phase::Downloading)
+                    });
+                    eprintln!("[ambar] {} download failed, trying mirror: {error}", rel.id.key());
+                }
+                Err(error) => return Err(error),
             }
         }
-        file.flush().await?;
-        drop(file);
-        let actual = hex::encode(hasher.finalize());
-        if !actual.eq_ignore_ascii_case(&artifact.sha256) {
-            return Err(msg(format!(
-                "{} doğrulanamadı: dosya özeti yayınlanan özetle uyuşmuyor. Tekrar dene.",
-                artifact.file_name
-            )));
-        }
+        debug_assert!(completed);
         paths.push(path);
     }
     progress(EngineProgress {

@@ -624,11 +624,11 @@ function renderEngineRow(id: EngineId) {
         break;
       case "downloading":
         fraction = p.fraction;
-        label = `İndiriliyor · ${formatBytes(p.downloaded)}`;
+        label = p.message ?? `İndiriliyor · ${formatBytes(p.downloaded)}${fraction == null ? "" : ` · ${formatPercent(fraction)}`}`;
         cls = "busy";
         break;
       case "installing":
-        label = "Doğrulanıyor";
+        label = "Arşiv açılıyor ve denetleniyor";
         cls = "busy";
         break;
       case "done":
