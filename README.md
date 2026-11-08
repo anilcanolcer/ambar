@@ -27,6 +27,8 @@ Kaynak siteye ve içerik türüne göre kullanılabilen özellikler değişebili
 
 Gerçek Windows kurulumundan alınmıştır. Önizleme ve dönüşüm örneğinde [Wikimedia Commons'taki RunningWater](https://commons.wikimedia.org/wiki/File:RunningWater.webm) kullanıldı.
 
+![Ambar ana ekranı](assets/screenshots/ambar-windows.png)
+
 ![Ambar video önizlemesi ve MP4 seçenekleri](assets/screenshots/ambar-video.png)
 
 | İndirme geçmişi | Güncelleme denetimi |
@@ -41,24 +43,23 @@ Gerçek Windows kurulumundan alınmıştır. Önizleme ve dönüşüm örneğind
 4. **Ses** veya **Video** biçimini, varsa kalite ve altyazı seçeneklerini seç; **İndir** düğmesine bas.
 5. Sonuçları **İndirilenler** bölümünden aç veya klasörde göster.
 
-İlk imzalı sürüm olan **0.1.0** öncesindeki deneme kurulumu güncelleme anahtarını içermez. Deneme kurulumunu kullananların [son kurulum dosyasını](https://github.com/anilcanolcer/ambar/releases/latest) **bir kez elle kurması gerekir**.
+Windows'ta FFmpeg'nin ilk kurulumu yaklaşık 109 MB'lık bir arşiv indirir. Ambar önce FFmpeg derlemesini yayımlayan Gyan Doshi'nin resmî GitHub aynasını kullanır; bağlantı yavaş veya erişilemezse yayıncının sitesini dener. Her iki kaynakta da indirilen dosya yayıncının SHA-256 özetiyle doğrulanır. Bileşen ekranı indirilen miktarı, yüzdeyi ve arşiv açma aşamasını ayrı gösterir.
+
+macOS paketi de indirilebilir. Apple noter onayı henüz yapılandırılmadığından macOS açılışta yayıncı uyarısı gösterebilir.
 
 ## 🔄 Uygulama nasıl güncellenir?
 
 Ambar yalnızca bu deponun imzalı GitHub sürümlerini kabul eder. Yeni kod `main` dalına eklendiğinde GitHub Actions yeni sürüm numarasıyla Windows ve macOS paketlerini oluşturur; iki platform ve `latest.json` doğrulanırsa sürümü yayımlar. Derleme başarısızsa sürüm yayımlanmaz.
 
-**0.1.0** sürümü güncellemeyi uygulama açıldıktan sonra denetler ve **Güncelle** düğmesini gösterir. Sonraki sürümler güncellemeyi ana ekran açılmadan önce denetleyip mevcutsa indirir, imzasını doğrular, kurar ve yeni sürümü açar. İnternet bağlantısı yoksa uygulama mevcut sürümle devam eder. Kurulum hata verirse **Tekrar dene** ve **Eski sürümü aç** seçenekleri bulunur.
-
-Windows'ta FFmpeg'nin ilk kurulumu yaklaşık 109 MB'lık bir arşiv indirir. Ambar önce FFmpeg derlemesini yayımlayan Gyan Doshi'nin resmî GitHub aynasını kullanır; bağlantı yavaş veya erişilemezse yayıncının sitesini dener. Her iki kaynakta da indirilen dosya yayıncının SHA-256 özetiyle doğrulanır. Bileşen ekranı indirilen miktarı, yüzdeyi ve arşiv açma aşamasını ayrı gösterir.
+Güncel Ambar sürümleri açılışta, ana ekran gelmeden önce güncellemeyi denetler. Yeni sürüm varsa indirir, imzasını doğrular, kurar ve yeniden açılır. İnternet bağlantısı yoksa mevcut sürümle devam eder. Kurulum hata verirse **Tekrar dene** ve **Eski sürümü aç** seçenekleri bulunur. İlk deneme kurulumunu kullananlar otomatik güncelleme anahtarını içermediği için [son setup dosyasını](https://github.com/anilcanolcer/ambar/releases/latest) bir kez elle kurmalıdır.
 
 Tauri güncelleme imzası, Windows/macOS işletim sistemi kod imzalama sertifikasıyla aynı şey değildir. İşletim sistemi yayıncısı doğrulanamadı uyarısı gösterebilir.
 
 ## ✅ Doğrulananlar
 
-- Windows imzalı **0.1.0** kurulumu açıldı; uygulama içindeki denetim **“Ambar güncel”** sonucunu verdi.
+- Windows'ta kurulu Ambar, **0.1.0 → 0.1.3** yükseltmesini uygulama içinden yaptı. **0.1.3 → 0.1.4** yükseltmesi açılışta kullanıcı tıklaması olmadan kuruldu; ayarlarda **0.1.4** doğrulandı.
 - Wikimedia Commons örneği MP3 ve MP4 olarak indirildi. MP4 dosyası H.264 video ve AAC ses içeriyor; FFmpeg ile hatasız çözümlendi.
-- Windows ve macOS imzalı paketleri GitHub Actions'da üretildi; `latest.json` her iki platformun imzalarını içeriyor.
-- Kurulu Windows uygulaması **0.1.0 → 0.1.3** yükseltmesini uygulama içinden yaptı. **0.1.3 → 0.1.4** yükseltmesi ise açılışta kullanıcı tıklaması olmadan kuruldu; Ambar yeni sürümle yeniden açıldı.
+- Windows ve macOS paketleri GitHub Actions'da üretildi; `latest.json` her iki platformun Tauri güncelleme imzalarını içeriyor.
 - FFmpeg'nin resmî GitHub aynasındaki dosya ve 1 MB'lık örnek indirme doğrulandı. Diğer bilgisayardaki ilk kurulumun daha hızlı tamamlandığı kullanıcı tarafından bildirildi; farklı ağlardaki hız değişebilir.
 - macOS paketi derlendi ve yayımlandı. Bu Windows bilgisayarda macOS kullanım testi yapılamadı; Apple noter onayı henüz yapılandırılmadı.
 
