@@ -1,10 +1,12 @@
+<img src="assets/icon.svg" alt="Ambar logosu" width="96">
+
 # 🏡 Ambar
 
 Ambar; video ve ses bağlantılarını bilgisayarına kaydetmeye yönelik, Türkçe bir masaüstü uygulaması taslağıdır. Anılcan Ölçer tarafından, [Kova](https://github.com/alpunlu12-commits/kova) projesinin kaynak kodu temel alınarak kişiselleştirilmiştir. İndirme ve dönüşüm işlemleri yt-dlp, FFmpeg ve Deno gibi ayrı açık kaynak bileşenlerle yapılır. Yalnızca indirme hakkına sahip olduğun içerikleri kullan.
 
 ## Durum
 
-Bu çalışma ilk kaynak kodu taslağıdır. Henüz derlenmiş, gerçek indirmeyle sınanmış veya yayımlanmış değildir. Otomatik uygulama güncellemeleri güvenlik için devre dışıdır; Kova'nın sürümleri yüklenmez. Bileşen güncellemeleri ayrı çalışır.
+Windows için deneme sürümü derlenmiştir. Serbest lisanslı bir örnekte MP3 indirme ve dönüşümü doğrulandı; video dönüşümündeki düzeltme yeni derlemede sınanmayı bekliyor. Kararlı sürüm henüz yayımlanmadı. Otomatik uygulama güncellemeleri güvenlik için devre dışıdır; Kova'nın sürümleri yüklenmez. Bileşen güncellemeleri ayrı çalışır.
 
 ## Geliştirme
 
