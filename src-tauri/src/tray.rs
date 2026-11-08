@@ -25,7 +25,7 @@ use tauri_plugin_dialog::DialogExt;
 use tauri_plugin_dialog::{MessageDialogButtons, MessageDialogKind};
 use tauri_plugin_opener::OpenerExt;
 
-const TRAY_ID: &str = "kova";
+const TRAY_ID: &str = "ambar";
 /// Menu item ids. Job rows are "job:<id>".
 pub const QUIT: &str = "quit";
 const GRAB_AUDIO: &str = "grab:audio";
@@ -33,7 +33,7 @@ const GRAB_VIDEO: &str = "grab:video";
 const GRAB_CHOOSE: &str = "grab:choose";
 const OPEN_WINDOW: &str = "open-window";
 const OPEN_FOLDER: &str = "open-folder";
-/// The menu bar icon at rest: a full bucket, so any download (which starts
+/// The menu bar icon at rest: Ambar's house mark, so any download (which starts
 /// from empty) looks clearly different.
 #[cfg(target_os = "macos")]
 const RESTING: &[u8] = include_bytes!("../icons/tray/20.png");
@@ -64,7 +64,7 @@ const FILL: [&[u8]; 21] = [
 ];
 
 /// Windows shows tray icons as they are, so there is one set for a dark and
-/// one for a light taskbar (made by icons/tray-win/make.py). Frames 00..19
+/// one for a light taskbar (made by scripts/make-tray-icons.mjs). Frames 00..19
 /// fill up in red while downloading; 20, the full bucket without red, is the
 /// icon at rest.
 #[cfg(windows)]
