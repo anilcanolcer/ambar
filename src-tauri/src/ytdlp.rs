@@ -615,7 +615,7 @@ pub fn download_args(req: &DownloadRequest, home: &Path, temp: &Path, square_cov
                 // QuickTime cannot play VP9 at all.
                 let codec = if res > 1080 && prefer_av1 { "av01" } else { "h264" };
                 let sort = format!("res:{res},vcodec:{codec},acodec:aac");
-                push(&mut a, &["-f", "bv*+ba/b", "-S", &sort, "--merge-output-format", "mp4", "--remux-video", "mp4"]);
+                push(&mut a, &["-f", "bv*+ba/b", "-S", &sort, "--merge-output-format", "mp4", "--recode-video", "mp4"]);
             }
         }
         push(&mut a, &["--embed-chapters"]);
