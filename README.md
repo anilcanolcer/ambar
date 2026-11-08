@@ -32,3 +32,23 @@ Windows ve macOS uygulama imzalama sertifikaları ayrıca yapılandırılmadığ
 ## Lisans ve kaynak
 
 Ambar, [Alp'in Kova projesi](https://github.com/alpunlu12-commits/kova) temel alınarak hazırlanmıştır. Orijinal projenin telif bildirimi ve MIT lisansı [LICENSE](LICENSE) dosyasında korunmaktadır. MIT lisansı, lisans ve telif bildiriminin korunması koşuluyla kodun kullanılmasına, değiştirilmesine ve dağıtılmasına izin verir. Diğer bileşenlerin kendi lisansları geçerlidir.
+
+
+## ✨ Taslakta yer alan özellikler
+
+- 🔗 Bağlantıdan medya bilgilerini ve varsa kapak görselini önizleme
+- 🎵 MP3, M4A, OPUS, FLAC ve WAV ses biçimleri
+- 🎬 MP4, MKV ve WEBM video biçimleri
+- 📚 Oynatma listesi seçimi, indirme kuyruğu ve geçmiş
+- 📁 İndirme klasörü seçimi ve uygun videolarda altyazı seçenekleri
+- 💻 Windows ve macOS için Tauri tabanlı masaüstü arayüzü
+
+Bu özellikler Kova altyapısından devralınmıştır; Ambar sürümünde henüz uçtan uca doğrulanmamıştır. Destek, kaynak siteye ve seçilen içeriğe göre değişebilir.
+
+## 🚀 Kullanım
+
+Kurulabilir sürüm yayımlandığında Ambar’ı açın, indirme hakkına sahip olduğunuz içeriğin bağlantısını yapıştırın, **Getir** seçeneğini kullanın ve istediğiniz biçimi seçerek indirmeyi başlatın. İlk açılışta gerekli bileşenler için onay istenebilir.
+
+## 🖼️ Ekran görüntüleri
+
+Uygulama derlenip test edildikten sonra gerçek arayüz görüntüleri burada paylaşılacaktır.
