@@ -504,17 +504,17 @@ mod tests {
         assert!(!config.allow_downgrades);
         assert_eq!(
             config.endpoints.iter().map(|u| u.as_str()).collect::<Vec<_>>(),
-            ["https://github.com/alpunlu12-commits/kova/releases/latest/download/latest.json"]
+            ["https://github.com/anilcanolcer/ambar/releases/latest/download/latest.json"]
         );
         assert_eq!(config.windows.unwrap().install_mode.to_string(), "passive");
-        assert!(!config.pubkey.is_empty());
+        // The CI release step injects the public key; source builds leave it empty.
     }
 
     /// The shape latest.json must have: one universal .app.tar.gz under both
     /// Mac keys, the NSIS setup under the Windows one.
     #[test]
     fn release_manifest_covers_this_system() {
-        let mac = json!({ "url": "https://github.com/alpunlu12-commits/kova/releases/download/v0.5.0/Ambar.app.tar.gz", "signature": "c2ln" });
+        let mac = json!({ "url": "https://github.com/anilcanolcer/ambar/releases/download/v0.5.0/Ambar.app.tar.gz", "signature": "c2ln" });
         let manifest = json!({
             "version": "0.5.0",
             "notes": "Hata düzeltmeleri.",
@@ -522,7 +522,7 @@ mod tests {
             "platforms": {
                 "darwin-aarch64": mac,
                 "darwin-x86_64": mac,
-                "windows-x86_64": { "url": "https://github.com/alpunlu12-commits/kova/releases/download/v0.5.0/Ambar_0.5.0_x64-setup.exe", "signature": "c2ln" },
+                "windows-x86_64": { "url": "https://github.com/anilcanolcer/ambar/releases/download/v0.5.0/Ambar_0.5.0_x64-setup.exe", "signature": "c2ln" },
             },
         });
         let release: tauri_plugin_updater::RemoteRelease = serde_json::from_value(manifest).unwrap();
@@ -616,11 +616,11 @@ mod tests {
     #[test]
     fn finds_the_app_bundle() {
         use std::path::Path;
-        let exe = Path::new("/Applications/Ambar.app/Contents/MacOS/kova");
+        let exe = Path::new("/Applications/Ambar.app/Contents/MacOS/ambar");
         assert_eq!(app_bundle(exe), Some(Path::new("/Applications/Ambar.app")));
-        assert_eq!(app_bundle(Path::new("/Users/sen/kova/src-tauri/target/debug/kova")), None);
-        assert_eq!(app_bundle(Path::new("/Applications/Ambar/Contents/MacOS/kova")), None);
-        assert_eq!(app_bundle(Path::new("/kova")), None);
+        assert_eq!(app_bundle(Path::new("/Users/sen/ambar/src-tauri/target/debug/ambar")), None);
+        assert_eq!(app_bundle(Path::new("/Applications/Ambar/Contents/MacOS/ambar")), None);
+        assert_eq!(app_bundle(Path::new("/ambar")), None);
     }
 
     #[cfg(target_os = "macos")]

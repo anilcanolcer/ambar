@@ -1,16 +1,68 @@
-<img src="assets/icon.svg" alt="Ambar logosu" width="96">
+![Ambar proje kapağı](assets/ambar-banner.svg)
 
-# 🏡 Ambar
+# 📦 Ambar
 
-Ambar; video ve ses bağlantılarını bilgisayarına kaydetmeye yönelik, Türkçe bir masaüstü uygulaması taslağıdır. Anılcan Ölçer tarafından, [Kova](https://github.com/alpunlu12-commits/kova) projesinin kaynak kodu temel alınarak kişiselleştirilmiştir. İndirme ve dönüşüm işlemleri yt-dlp, FFmpeg ve Deno gibi ayrı açık kaynak bileşenlerle yapılır. Yalnızca indirme hakkına sahip olduğun içerikleri kullan.
+**Medyan senin bilgisayarında.** Bağlantıyı yapıştır, biçimi seç, indir. Ambar; video ve ses içeriklerini bilgisayarına kaydetmek için hazırlanmış, Türkçe, ücretsiz ve açık kaynak bir masaüstü uygulamasıdır.
 
-## Durum
+[⬇️ Son sürümü indir](https://github.com/anilcanolcer/ambar/releases/latest) · [🌐 Ölçer Web Tasarım](https://olcerwebtasarim.com/) · [📋 Sorun bildir](https://github.com/anilcanolcer/ambar/issues)
 
-Windows için deneme sürümü derlenmiştir. Serbest lisanslı bir örnekte MP3 indirme ve dönüşümü doğrulandı; video dönüşümündeki düzeltme yeni derlemede sınanmayı bekliyor. Kararlı sürüm henüz yayımlanmadı. Otomatik uygulama güncellemeleri güvenlik için devre dışıdır; Kova'nın sürümleri yüklenmez. Bileşen güncellemeleri ayrı çalışır.
+## ✨ Proje özeti & vizyonu
 
-## Geliştirme
+Ambar, [Anılcan Ölçer](https://github.com/anilcanolcer) tarafından geliştirilen ve sürdürülen bir masaüstü medya arşivleme projesidir. [Ölçer Web Tasarım](https://olcerwebtasarim.com/) yaklaşımındaki net arayüz, anlaşılır süreç ve sürdürülebilir bakım fikrini küçük bir kişisel araca taşıyoruz: hangi dosyanın nereye kaydedileceği açık olsun, kullanılan bileşenler görülebilsin ve yeni sürümler güvenli biçimde ulaşsın.
 
-Node.js ve npm, Rust ve Tauri 2'nin işletim sistemine özgü ön koşulları gereklidir. Windows'ta Visual Studio C++ Build Tools ve WebView2 gerekir. Ön koşullar için https://v2.tauri.app/start/prerequisites/ adresine bakın.
+Vizyonumuz, izinli içeriklerini toplamak isteyen herkesin karmaşık komutlarla uğraşmadan kendi bilgisayarında düzenli bir arşiv kurabilmesi. Ambar'ın altyapısı MIT lisanslı [Kova](https://github.com/alpunlu12-commits/kova) kaynak kodundan geliştirilmiştir. Kaynak proje ve diğer açık kaynak bileşenlerin atıfları aşağıdadır.
+
+| | Ambar'da neler var? |
+| --- | --- |
+| 🔗 **Önizleme** | Bağlantıdaki medyanın adı, süresi ve varsa kapak bilgisi |
+| 🎵 **Ses** | MP3, M4A, OPUS, FLAC ve WAV seçenekleri |
+| 🎬 **Video** | MP4, MKV ve WEBM seçenekleri; kalite seçimi |
+| 📚 **Düzen** | İndirme kuyruğu, geçmiş, klasör seçimi ve oynatma listeleri |
+| 🧰 **Bileşenler** | yt-dlp, FFmpeg ve Deno sürümlerini uygulama içinden yönetme |
+| 🔐 **Güncelleme** | GitHub Releases üzerinden imzalı Ambar sürümlerini denetleme ve kurma |
+
+Kaynak siteye ve içerik türüne göre kullanılabilen özellikler değişebilir. Yalnızca indirme hakkına sahip olduğun içerikleri kullan.
+
+## 🖼️ Uygulamadan görüntüler
+
+Gerçek Windows kurulumundan alınmıştır. Önizleme ve dönüşüm örneğinde [Wikimedia Commons'taki RunningWater](https://commons.wikimedia.org/wiki/File:RunningWater.webm) kullanıldı.
+
+![Ambar video önizlemesi ve MP4 seçenekleri](assets/screenshots/ambar-video.png)
+
+| İndirme geçmişi | Güncelleme denetimi |
+| --- | --- |
+| ![Ambar'da indirilen MP4 ve MP3](assets/screenshots/ambar-downloads.png) | ![Ambar güncel durumu](assets/screenshots/ambar-update.png) |
+
+## 🚀 Kurulum ve kullanım
+
+1. [Son sürüm](https://github.com/anilcanolcer/ambar/releases/latest) sayfasından Windows için **`Ambar_…_x64-setup.exe`**, macOS için **`Ambar_…_universal.dmg`** dosyasını indir.
+2. Uygulamayı kur ve aç. İlk kullanımda Ambar, yt-dlp, FFmpeg ve Deno bileşenlerini kendi kaynaklarından indirip doğrulamak için senden onay ister.
+3. İndirme hakkına sahip olduğun bağlantıyı yapıştır ve **Getir** düğmesine bas.
+4. **Ses** veya **Video** biçimini, varsa kalite ve altyazı seçeneklerini seç; **İndir** düğmesine bas.
+5. Sonuçları **İndirilenler** bölümünden aç veya klasörde göster.
+
+İlk imzalı sürüm olan **0.1.0** öncesindeki deneme kurulumu güncelleme anahtarını içermez. Deneme kurulumunu kullananların [son kurulum dosyasını](https://github.com/anilcanolcer/ambar/releases/latest) **bir kez elle kurması gerekir**.
+
+## 🔄 Uygulama nasıl güncellenir?
+
+Ambar yalnızca bu deponun imzalı GitHub sürümlerini kabul eder. Yeni kod `main` dalına eklendiğinde GitHub Actions yeni sürüm numarasıyla Windows ve macOS paketlerini oluşturur; iki platform ve `latest.json` doğrulanırsa sürümü yayımlar. Derleme başarısızsa sürüm yayımlanmaz.
+
+**0.1.0** sürümü güncellemeyi uygulama açıldıktan sonra denetler ve **Güncelle** düğmesini gösterir. Sonraki sürümler güncellemeyi ana ekran açılmadan önce denetleyip mevcutsa indirir, imzasını doğrular, kurar ve yeni sürümü açar. İnternet bağlantısı yoksa uygulama mevcut sürümle devam eder. Kurulum hata verirse **Tekrar dene** ve **Eski sürümü aç** seçenekleri bulunur.
+
+Tauri güncelleme imzası, Windows/macOS işletim sistemi kod imzalama sertifikasıyla aynı şey değildir. İşletim sistemi yayıncısı doğrulanamadı uyarısı gösterebilir.
+
+## ✅ Doğrulananlar
+
+- Windows imzalı **0.1.0** kurulumu açıldı; uygulama içindeki denetim **“Ambar güncel”** sonucunu verdi.
+- Wikimedia Commons örneği MP3 ve MP4 olarak indirildi. MP4 dosyası H.264 video ve AAC ses içeriyor; FFmpeg ile hatasız çözümlendi.
+- Windows ve macOS imzalı paketleri GitHub Actions'da üretildi; `latest.json` her iki platformun imzalarını içeriyor.
+- macOS kurulumu bu Windows bilgisayarda çalıştırılamadığı için macOS kullanım testi henüz yapılmadı. Açılışta otomatik yükseltme, bir sonraki yayınla birlikte gerçek bir eski sürümden sınanacak.
+
+Kısa bir örneğin süresi veya hızı, farklı sitelerdeki indirme ve dönüşüm performansı için genel garanti değildir.
+
+## 🛠️ Kaynaktan geliştirme
+
+Node.js, npm, Rust ve [Tauri 2 ön koşulları](https://v2.tauri.app/start/prerequisites/) gerekir. Windows'ta Visual Studio C++ Build Tools ve WebView2 de gereklidir.
 
 ```sh
 npm ci
@@ -18,39 +70,8 @@ npm run app
 npm run app:build
 ```
 
-Windows ve macOS yükleyicileri kendi platformlarında üretilip sınanmalıdır. GitHub'a yüklemek tek başına yükleyici veya güncelleme oluşturmaz.
+İmzalama anahtarı depoya eklenmez. GitHub Actions'ta `AMBAR_UPDATER_PUBLIC_KEY` değişkeni ve `TAURI_SIGNING_PRIVATE_KEY` gizli anahtarı tanımlanır. Özel anahtar kaybolursa var olan kurulumlara güvenilir güncelleme gönderilemez.
 
-## GitHub üzerinden kurulum dosyası ve güncellemeler
+## 🤝 Kaynak ve lisans
 
-Henüz hazırlanmış bir yayın veya yükleyici yoktur.
-
-1. Proje kökünde `npm ci` çalıştırın, ardından `npm run tauri signer generate -- -w ambar-signing.key` ile Tauri anahtar çiftini oluşturun. Özel anahtar dosyasını güvenli bir yerde yedekleyin; depoya veya sohbetlere göndermeyin. Onu kaybederseniz mevcut kurulumlara güncelleme gönderemezsiniz.
-2. GitHub depo ayarlarında Actions değişkenlerine `AMBAR_UPDATER_PUBLIC_KEY` adıyla açık anahtarın içeriğini, Actions secrets bölümüne `TAURI_SIGNING_PRIVATE_KEY` adıyla özel anahtarın içeriğini ve şifre kullanıldıysa `TAURI_SIGNING_PRIVATE_KEY_PASSWORD` değerini ekleyin.
-3. Actions sekmesinde **Ambar sürüm taslağı** iş akışını çalıştırın. Windows kurulum dosyası, macOS DMG ve imzalı güncelleme dosyaları taslak GitHub sürümüne eklenir. Bu akış henüz gerçek bir GitHub çalıştırmasıyla doğrulanmamıştır.
-4. Her iki platformda kurulum, indirme ve bir sonraki sürüme yükseltme testlerini yapın. Taslak sürümü inceleyip yayımlayın. Sonraki sürümlerde `package.json`, `src-tauri/Cargo.toml` ve `src-tauri/tauri.conf.json` sürümlerini aynı yeni sürüme yükseltin.
-
-Windows ve macOS uygulama imzalama sertifikaları ayrıca yapılandırılmadığından sistemler güvenlik uyarıları gösterebilir. Tauri güncelleme imzası bu sertifikaların yerine geçmez.
-
-## Lisans ve kaynak
-
-Ambar, [Alp'in Kova projesi](https://github.com/alpunlu12-commits/kova) temel alınarak hazırlanmıştır. Orijinal projenin telif bildirimi ve MIT lisansı [LICENSE](LICENSE) dosyasında korunmaktadır. MIT lisansı, lisans ve telif bildiriminin korunması koşuluyla kodun kullanılmasına, değiştirilmesine ve dağıtılmasına izin verir. Diğer bileşenlerin kendi lisansları geçerlidir.
-
-
-## ✨ Taslakta yer alan özellikler
-
-- 🔗 Bağlantıdan medya bilgilerini ve varsa kapak görselini önizleme
-- 🎵 MP3, M4A, OPUS, FLAC ve WAV ses biçimleri
-- 🎬 MP4, MKV ve WEBM video biçimleri
-- 📚 Oynatma listesi seçimi, indirme kuyruğu ve geçmiş
-- 📁 İndirme klasörü seçimi ve uygun videolarda altyazı seçenekleri
-- 💻 Windows ve macOS için Tauri tabanlı masaüstü arayüzü
-
-Bu özellikler Kova altyapısından devralınmıştır; Ambar sürümünde henüz uçtan uca doğrulanmamıştır. Destek, kaynak siteye ve seçilen içeriğe göre değişebilir.
-
-## 🚀 Kullanım
-
-Kurulabilir sürüm yayımlandığında Ambar’ı açın, indirme hakkına sahip olduğunuz içeriğin bağlantısını yapıştırın, **Getir** seçeneğini kullanın ve istediğiniz biçimi seçerek indirmeyi başlatın. İlk açılışta gerekli bileşenler için onay istenebilir.
-
-## 🖼️ Ekran görüntüleri
-
-Uygulama derlenip test edildikten sonra gerçek arayüz görüntüleri burada paylaşılacaktır.
+Ambar, Anılcan Ölçer'in markası ve geliştirmesiyle sürdürülür. Başlangıç kod tabanı [Kova](https://github.com/alpunlu12-commits/kova) projesidir; orijinal telif bildirimi ve MIT lisansı [LICENSE](LICENSE) dosyasında korunur. yt-dlp, FFmpeg, Deno, Tauri ve diğer bağımlılıkların kendi lisansları geçerlidir.

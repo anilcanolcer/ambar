@@ -119,6 +119,26 @@ code {
   flex-direction: column;
 }
 
+.startup-update {
+  width: min(440px, calc(100% - 32px));
+  display: grid;
+  justify-items: center;
+  gap: 14px;
+  padding: 30px;
+  text-align: center;
+}
+
+.startup-update .progress {
+  width: 100%;
+}
+
+.startup-update-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+}
+
 h1,
 h2,
 h3,

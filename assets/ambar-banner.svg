@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="400" viewBox="0 0 1200 400" role="img" aria-labelledby="title desc">
+  <title id="title">Ambar — medyan senin bilgisayarında</title>
+  <desc id="desc">Koyu lacivert zemin üzerinde turkuaz Ambar simgesi, proje adı ve masaüstü uygulama görseli.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" x2="1" y1="0" y2="1"><stop stop-color="#10151e"/><stop offset="1" stop-color="#152d35"/></linearGradient>
+    <linearGradient id="panel" x1="0" x2="1" y1="0" y2="1"><stop stop-color="#273942"/><stop offset="1" stop-color="#14242d"/></linearGradient>
+  </defs>
+  <rect width="1200" height="400" rx="28" fill="url(#bg)"/>
+  <circle cx="1173" cy="29" r="240" fill="#71d4ca" opacity=".08"/>
+  <circle cx="32" cy="403" r="250" fill="#71d4ca" opacity=".05"/>
+  <g transform="translate(66 79)">
+    <rect width="82" height="82" rx="21" fill="#10151e" stroke="#71d4ca" stroke-opacity=".35"/>
+    <path d="M19 37 41 20l22 17v23H19z" fill="#e7f1f0"/>
+    <path d="M15 37 41 17l26 20" fill="none" stroke="#71d4ca" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M41 40v21m-7-7 7 7 7-7" fill="none" stroke="#152d35" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+  <text x="66" y="210" fill="#e7f1f0" font-family="Segoe UI,Arial,sans-serif" font-size="70" font-weight="750" letter-spacing="-3">Ambar</text>
+  <text x="69" y="251" fill="#71d4ca" font-family="Segoe UI,Arial,sans-serif" font-size="20" font-weight="650" letter-spacing="3">MEDYAN SENİN BİLGİSAYARINDA</text>
+  <text x="69" y="290" fill="#b9c8cb" font-family="Segoe UI,Arial,sans-serif" font-size="18">Türkçe · Ücretsiz · Açık kaynak · Windows &amp; macOS</text>
+  <rect x="68" y="324" width="225" height="38" rx="19" fill="#71d4ca"/>
+  <text x="91" y="349" fill="#10202a" font-family="Segoe UI,Arial,sans-serif" font-size="15" font-weight="700">İndir · Dönüştür · Sakla</text>
+  <g transform="translate(657 61)">
+    <rect width="477" height="276" rx="18" fill="url(#panel)" stroke="#71d4ca" stroke-opacity=".38"/>
+    <rect width="477" height="35" rx="18" fill="#1b2b34"/>
+    <circle cx="23" cy="18" r="5" fill="#71d4ca"/><circle cx="41" cy="18" r="5" fill="#f2b35c"/><circle cx="59" cy="18" r="5" fill="#eb6b74"/>
+    <text x="30" y="76" fill="#e7f1f0" font-family="Segoe UI,Arial,sans-serif" font-size="23" font-weight="700">Bağlantıyı yapıştır</text>
+    <text x="30" y="104" fill="#a9bdc2" font-family="Segoe UI,Arial,sans-serif" font-size="14">Ambar medyayı bulsun ve hazırlasın.</text>
+    <rect x="30" y="124" width="418" height="45" rx="12" fill="#111d26" stroke="#6dcac2" stroke-opacity=".5"/>
+    <text x="48" y="153" fill="#8ba6aa" font-family="Segoe UI,Arial,sans-serif" font-size="14">https:// bağlantı</text>
+    <rect x="357" y="130" width="83" height="33" rx="9" fill="#71d4ca"/>
+    <text x="378" y="152" fill="#10202a" font-family="Segoe UI,Arial,sans-serif" font-size="14" font-weight="700">Getir</text>
+    <rect x="30" y="189" width="418" height="57" rx="12" fill="#182b34" stroke="#3e555c"/>
+    <circle cx="58" cy="217" r="14" fill="#71d4ca"/>
+    <path d="m54 211 10 6-10 6z" fill="#10202a"/>
+    <text x="84" y="214" fill="#e7f1f0" font-family="Segoe UI,Arial,sans-serif" font-size="15" font-weight="600">Medya Ambar'da</text>
+    <text x="84" y="234" fill="#71d4ca" font-family="Segoe UI,Arial,sans-serif" font-size="12">İndirildi · Bilgisayarında</text>
+  </g>
+</svg>

@@ -276,6 +276,8 @@ interface AppUpdateState {
 interface State {
   ready: boolean;
   bootError: string | null;
+  startupUpdate: "checking" | "installing" | "failed" | null;
+  startupUpdateError: string | null;
   appVersion: string;
   noticeVersion: number;
   settings: Settings;
@@ -323,6 +325,8 @@ interface State {
 const state: State = {
   ready: false,
   bootError: null,
+  startupUpdate: null,
+  startupUpdateError: null,
   appVersion: "",
   noticeVersion: 1,
   settings: {
@@ -495,6 +499,37 @@ function renderTitlebar() {
 }
 
 function renderLoading() {
+  if (state.startupUpdate === "failed") {
+    return h("main", { class: "center-screen" },
+      h("div", { class: "card startup-update" },
+        icon("alert", 24),
+        h("h2", {}, "Güncelleme kurulamadı"),
+        h("p", { class: "muted selectable" }, state.startupUpdateError ?? "Bilinmeyen hata"),
+        h("div", { class: "startup-update-actions" },
+          button("Tekrar dene", () => void retryStartupUpdate(), { class: "btn-primary" }),
+          button("Eski sürümü aç", finishBoot, { class: "btn-ghost" }),
+        ),
+      ),
+    );
+  }
+  if (state.startupUpdate === "checking") {
+    return h("main", { class: "center-screen" }, h("div", { class: "loading" }, spinner(), h("span", {}, "Ambar güncellemeleri denetleniyor…")));
+  }
+  if (state.startupUpdate === "installing") {
+    const progress = state.appUpdate.progress;
+    const percent = progress?.total ? Math.min(100, Math.round(progress.downloaded / progress.total * 100)) : null;
+    const bar = h("div", { class: `progress${percent === null ? " indeterminate" : ""}` }, h("div", { class: "bar" }));
+    if (percent !== null) (bar.firstElementChild as HTMLElement).style.width = `${percent}%`;
+    return h("main", { class: "center-screen" },
+      h("div", { class: "card startup-update" },
+        spinner(),
+        h("h2", {}, `Ambar ${state.appUpdate.found?.version ?? ""} kuruluyor…`),
+        h("p", { class: "muted" }, percent === null ? "İndiriliyor ve imzası doğrulanıyor" : `İndiriliyor · %${percent}`),
+        bar,
+        h("p", { class: "muted" }, "Kurulum bitince Ambar yeni sürümüyle açılır."),
+      ),
+    );
+  }
   return h(
     "main",
     { class: "center-screen" },
@@ -1866,7 +1901,7 @@ let appProgressFrame = 0;
 function startAppUpdateChecks() {
   if (appCheckTimer !== null) return;
   // A little later, so start-up and the engine check go first.
-  setTimeout(() => checkAppUpdate(false), APP_CHECK_DELAY);
+  if (lastAppCheck === 0) setTimeout(() => checkAppUpdate(false), APP_CHECK_DELAY);
   // Hourly ticks against the clock: a 24-hour timer stalls while the computer sleeps.
   appCheckTimer = window.setInterval(() => {
     if (Date.now() - lastAppCheck >= APP_CHECK_EVERY) checkAppUpdate(false);
@@ -1938,7 +1973,8 @@ function onAppUpdateProgress(p: AppUpdateProgress) {
   if (!appProgressFrame) {
     appProgressFrame = requestAnimationFrame(() => {
       appProgressFrame = 0;
-      paintAppUpdate();
+      if (state.startupUpdate === "installing") render();
+      else paintAppUpdate();
     });
   }
 }
@@ -2273,6 +2309,58 @@ function openUrl(url: string) {
 
 // --------------------------------------------------------------------- boot
 
+/** Hold the main screen until the signed update check has finished. */
+async function checkStartupUpdate(): Promise<boolean> {
+  if (!inTauri || import.meta.env.DEV) return true;
+  state.startupUpdate = "checking";
+  state.startupUpdateError = null;
+  render();
+  let found: AppUpdate | null;
+  try {
+    found = await api.checkAppUpdate();
+    lastAppCheck = Date.now();
+  } catch (e) {
+    // Offline or an unavailable release should not prevent Ambar from opening.
+    state.appUpdate.checkError = errorText(e);
+    state.startupUpdate = null;
+    return true;
+  }
+  if (!found) {
+    state.startupUpdate = null;
+    return true;
+  }
+  state.appUpdate.found = found;
+  state.appUpdate.progress = null;
+  state.startupUpdate = "installing";
+  render();
+  try {
+    await api.installAppUpdate();
+    throw new Error("Kurulum yeniden başlatılmadı.");
+  } catch (e) {
+    state.startupUpdate = "failed";
+    state.startupUpdateError = errorText(e);
+    render();
+    return false;
+  }
+}
+
+async function retryStartupUpdate() {
+  if (await checkStartupUpdate()) finishBoot();
+}
+
+function finishBoot() {
+  state.startupUpdate = null;
+  state.ready = true;
+  render();
+  setupGlobalEvents();
+  if (!needsOnboarding()) {
+    focusUrl();
+    checkUpdates(false, false);
+    startUpdateTimer();
+    startAppUpdateChecks();
+  }
+}
+
 async function boot() {
   render();
   try {
@@ -2300,15 +2388,7 @@ async function boot() {
       state.install.running = true;
       adoptedInstall = true;
     }
-    state.ready = true;
-    render();
-    setupGlobalEvents();
-    if (!needsOnboarding()) {
-      focusUrl();
-      checkUpdates(false, false);
-      startUpdateTimer();
-      startAppUpdateChecks();
-    }
+    if (await checkStartupUpdate()) finishBoot();
   } catch (e) {
     state.bootError = `Ambar başlatılamadı: ${errorText(e)}`;
     render();

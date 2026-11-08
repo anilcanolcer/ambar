@@ -1,8 +1,13 @@
-name: Ambar sürüm taslağı
+name: Ambar imzalı sürüm
 on:
+  push:
+    branches: [main]
   workflow_dispatch:
 permissions:
   contents: write
+concurrency:
+  group: ambar-release
+  cancel-in-progress: false
 jobs:
   build:
     strategy:
@@ -33,6 +38,7 @@ jobs:
           AMBAR_UPDATER_PUBLIC_KEY: ${{ vars.AMBAR_UPDATER_PUBLIC_KEY }}
           AMBAR_SIGNING_KEY: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY }}
           AMBAR_REPOSITORY: ${{ github.repository }}
+          AMBAR_RELEASE_VERSION: 0.1.${{ github.run_number }}
         run: node scripts/configure-release.mjs
       - uses: tauri-apps/tauri-action@v1
         env:
@@ -42,8 +48,38 @@ jobs:
         with:
           tagName: v__VERSION__
           releaseName: Ambar v__VERSION__
-          releaseBody: Kurulum dosyaları Windows ve macOS içindir. Yayınlamadan önce test edin.
+          releaseBody: Windows kurulum dosyası ve macOS DMG. Ambar, yeni sürümü açılışta ve günlük olarak denetler.
           releaseDraft: true
           prerelease: false
           updaterJsonPreferNsis: true
           args: ${{ matrix.args }}
+  publish:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: İmzalı Windows ve macOS güncelleme dosyalarını doğrula
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_REPO: ${{ github.repository }}
+          AMBAR_RELEASE_VERSION: 0.1.${{ github.run_number }}
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/ambar-release"
+          gh release download "v$AMBAR_RELEASE_VERSION" --pattern latest.json --dir "$RUNNER_TEMP/ambar-release"
+          node -e '
+            const fs = require("fs");
+            const path = process.env.RUNNER_TEMP + "/ambar-release/latest.json";
+            const data = JSON.parse(fs.readFileSync(path, "utf8"));
+            const platforms = Object.keys(data.platforms ?? {});
+            if (data.version !== process.env.AMBAR_RELEASE_VERSION ||
+                !platforms.some(p => p.startsWith("windows-")) ||
+                !platforms.some(p => p.startsWith("darwin-"))) {
+              throw new Error("Windows veya macOS imzalı güncelleme dosyası eksik.");
+            }
+            for (const platform of platforms) {
+              const item = data.platforms[platform];
+              if (!item.url || !item.signature) throw new Error(platform + " imza veya adresi eksik.");
+            }
+            console.log("Doğrulanan platformlar: " + platforms.join(", "));
+          '
+          gh release edit "v$AMBAR_RELEASE_VERSION" --draft=false --latest
