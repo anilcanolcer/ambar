@@ -49,6 +49,8 @@ Ambar yalnızca bu deponun imzalı GitHub sürümlerini kabul eder. Yeni kod `ma
 
 **0.1.0** sürümü güncellemeyi uygulama açıldıktan sonra denetler ve **Güncelle** düğmesini gösterir. Sonraki sürümler güncellemeyi ana ekran açılmadan önce denetleyip mevcutsa indirir, imzasını doğrular, kurar ve yeni sürümü açar. İnternet bağlantısı yoksa uygulama mevcut sürümle devam eder. Kurulum hata verirse **Tekrar dene** ve **Eski sürümü aç** seçenekleri bulunur.
 
+Windows'ta FFmpeg'nin ilk kurulumu yaklaşık 109 MB'lık bir arşiv indirir. Ambar önce FFmpeg derlemesini yayımlayan Gyan Doshi'nin resmî GitHub aynasını kullanır; bağlantı yavaş veya erişilemezse yayıncının sitesini dener. Her iki kaynakta da indirilen dosya yayıncının SHA-256 özetiyle doğrulanır. Bileşen ekranı indirilen miktarı, yüzdeyi ve arşiv açma aşamasını ayrı gösterir.
+
 Tauri güncelleme imzası, Windows/macOS işletim sistemi kod imzalama sertifikasıyla aynı şey değildir. İşletim sistemi yayıncısı doğrulanamadı uyarısı gösterebilir.
 
 ## ✅ Doğrulananlar
@@ -56,7 +58,9 @@ Tauri güncelleme imzası, Windows/macOS işletim sistemi kod imzalama sertifika
 - Windows imzalı **0.1.0** kurulumu açıldı; uygulama içindeki denetim **“Ambar güncel”** sonucunu verdi.
 - Wikimedia Commons örneği MP3 ve MP4 olarak indirildi. MP4 dosyası H.264 video ve AAC ses içeriyor; FFmpeg ile hatasız çözümlendi.
 - Windows ve macOS imzalı paketleri GitHub Actions'da üretildi; `latest.json` her iki platformun imzalarını içeriyor.
-- macOS kurulumu bu Windows bilgisayarda çalıştırılamadığı için macOS kullanım testi henüz yapılmadı. Açılışta otomatik yükseltme, bir sonraki yayınla birlikte gerçek bir eski sürümden sınanacak.
+- Kurulu Windows uygulaması **0.1.0 → 0.1.3** yükseltmesini uygulama içinden yaptı. **0.1.3 → 0.1.4** yükseltmesi ise açılışta kullanıcı tıklaması olmadan kuruldu; Ambar yeni sürümle yeniden açıldı.
+- FFmpeg'nin resmî GitHub aynasındaki dosya ve 1 MB'lık örnek indirme doğrulandı. Diğer bilgisayardaki ilk kurulumun daha hızlı tamamlandığı kullanıcı tarafından bildirildi; farklı ağlardaki hız değişebilir.
+- macOS paketi derlendi ve yayımlandı. Bu Windows bilgisayarda macOS kullanım testi yapılamadı; Apple noter onayı henüz yapılandırılmadı.
 
 Kısa bir örneğin süresi veya hızı, farklı sitelerdeki indirme ve dönüşüm performansı için genel garanti değildir.
 
