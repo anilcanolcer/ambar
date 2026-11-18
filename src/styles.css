@@ -1850,6 +1850,51 @@ body.dropping::after {
   flex-direction: column;
 }
 
+.phone-share-dialog {
+  max-width: 420px;
+  color: var(--text);
+}
+
+.phone-share-body {
+  align-items: center;
+  gap: 10px;
+  text-align: center;
+}
+
+.phone-share-body p,
+.phone-share-body details,
+.phone-share-countdown {
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.45;
+}
+
+.phone-share-title {
+  overflow-wrap: anywhere;
+}
+
+.phone-share-qr {
+  width: 228px;
+  max-width: 100%;
+  height: auto;
+  image-rendering: pixelated;
+  border-radius: 8px;
+}
+
+.phone-share-url {
+  width: 100%;
+  padding: 7px 10px;
+  color: var(--text);
+  background: var(--surface-3);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  font-family: monospace;
+}
+
+.phone-share-body summary {
+  cursor: pointer;
+}
+
 .setting {
   display: flex;
   align-items: center;

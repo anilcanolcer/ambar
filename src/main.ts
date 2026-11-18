@@ -25,6 +25,7 @@ import type {
   JobView,
   Kind,
   MediaInfo,
+  PhoneShare,
   Platform,
   PlaylistInfo,
   Settings,
@@ -1377,6 +1378,7 @@ function renderJob(job: JobView): HTMLElement {
         icon: "folder",
         title: onWindows() ? "Dosyayı klasöründe göster" : "Dosyayı Finder'da göster",
       }),
+      button("Telefonunla tara", () => void openPhoneShare(job), { class: "btn-ghost btn-sm", icon: "qr" }),
       iconButton("close", "Listeden kaldır", () => run(() => api.removeJob(job.id))),
     );
   } else {
@@ -1661,6 +1663,137 @@ function showAdded(created: JobView[]) {
 
 // ------------------------------------------------------------------- modals
 
+let openingPhoneShare = false;
+let closePhoneShare: (() => void) | null = null;
+
+async function openPhoneShare(job: JobView) {
+  if (openingPhoneShare || closePhoneShare) return;
+  openingPhoneShare = true;
+
+  const focused = document.activeElement;
+  const closeButton = iconButton("close", "Paylaşımı kapat", close);
+  const status = h("p", { class: "phone-share-status", attrs: { role: "status" } }, "Paylaşım hazırlanıyor…");
+  const content = h("div", { class: "modal-body phone-share-body" }, status);
+  const dialog = h("div", { class: "modal fresh phone-share-dialog", attrs: { role: "dialog", "aria-modal": "true", "aria-labelledby": "phone-share-heading" } },
+    h("div", { class: "modal-head" },
+      h("h2", { attrs: { id: "phone-share-heading" } }, "Telefonunla tara"),
+      closeButton,
+    ),
+    content,
+  );
+  const backdrop = h("div", { class: "modal-backdrop fresh" }, dialog);
+  let shareId: string | undefined;
+  let timer: number | undefined;
+
+  function close() {
+    if (closePhoneShare !== close) return;
+    closePhoneShare = null;
+    window.clearInterval(timer);
+    document.removeEventListener("keydown", handleKey, true);
+    backdrop.remove();
+    if (focused instanceof HTMLElement && focused.isConnected) focused.focus();
+    const id = shareId;
+    if (id) void run(() => api.stopPhoneShare(id));
+  }
+
+  function handleKey(event: KeyboardEvent) {
+    if (event.key === "Escape") {
+      event.preventDefault();
+      event.stopPropagation();
+      close();
+    }
+    if (event.key === "Tab") {
+      const controls = [...dialog.querySelectorAll<HTMLElement>("button:not(:disabled), input, summary")];
+      const first = controls[0];
+      const last = controls[controls.length - 1];
+      const edge = event.shiftKey ? first : last;
+      if (document.activeElement === edge || !dialog.contains(document.activeElement)) {
+        event.preventDefault();
+        (event.shiftKey ? last : first)?.focus();
+      }
+    }
+  }
+
+  closePhoneShare = close;
+  document.body.append(backdrop);
+  document.addEventListener("keydown", handleKey, true);
+  closeButton.focus();
+
+  try {
+    const result = await api.startPhoneShare(job.id);
+    if (closePhoneShare !== close) {
+      await api.stopPhoneShare(result.id);
+      return;
+    }
+    shareId = result.id;
+    const urlField = h("input", { class: "phone-share-url", attrs: { readonly: "", "aria-label": "Paylaşım bağlantısı" } });
+    urlField.value = result.url;
+    const copy = button("Bağlantıyı kopyala", () => void copyLink(), { class: "btn-ghost btn-sm", icon: "link" });
+    async function copyLink() {
+      try {
+        await navigator.clipboard.writeText(result.url);
+        copy.querySelector("span")!.textContent = "Kopyalandı";
+      } catch {
+        urlField.focus();
+        urlField.select();
+        copy.querySelector("span")!.textContent = "Kopyalamak için Ctrl+C veya ⌘C";
+      }
+    }
+
+    const countdown = h("span", { class: "phone-share-countdown" });
+    const deadline = Date.now() + result.expiresIn * 1000;
+    const updateClock = () => {
+      const seconds = Math.max(0, Math.ceil((deadline - Date.now()) / 1000));
+      countdown.textContent = `Kalan süre ${Math.floor(seconds / 60)}:${String(seconds % 60).padStart(2, "0")}`;
+      if (seconds === 0) {
+        window.clearInterval(timer);
+        content.replaceChildren(h("p", { class: "phone-share-status", attrs: { role: "status" } }, "Paylaşımın süresi doldu."),
+          button("Yeni QR kod oluştur", () => {
+            close();
+            void openPhoneShare(job);
+          }, { class: "btn-primary", icon: "retry" }));
+      }
+    };
+    content.replaceChildren(
+      h("strong", { class: "phone-share-title" }, job.title),
+      h("p", {}, "Telefonunu bilgisayarla aynı ağa bağla ve kameranla QR kodu tara. İndirme bitene kadar bu pencereyi açık tut."),
+      drawPhoneQr(result),
+      countdown,
+      urlField,
+      copy,
+      h("details", {}, h("summary", {}, "Telefon sayfayı açamıyor mu?"),
+        h("p", {}, "Telefonun aynı Wi‑Fi ağına bağlı olduğunu ve tarayıcının bağlantıyı HTTP olarak açtığını kontrol et. Güvenlik duvarı izin isterse Ambar’a özel ağda erişim ver.")),
+    );
+    timer = window.setInterval(updateClock, 1000);
+    updateClock();
+  } catch (e) {
+    if (closePhoneShare === close) status.textContent = errorText(e);
+  } finally {
+    openingPhoneShare = false;
+  }
+}
+
+function drawPhoneQr(share: PhoneShare): HTMLCanvasElement {
+  const quietZone = 4;
+  const scale = 6;
+  const size = (share.qrWidth + 2 * quietZone) * scale;
+  const canvas = h("canvas", {
+    class: "phone-share-qr",
+    attrs: { width: String(size), height: String(size), role: "img", "aria-label": "Telefonla indirme bağlantısı için QR kod" },
+  });
+  const ctx = canvas.getContext("2d")!;
+  ctx.fillStyle = "#fff";
+  ctx.fillRect(0, 0, size, size);
+  ctx.fillStyle = "#111";
+  share.qrModules.forEach((dark, index) => {
+    if (!dark) return;
+    const x = index % share.qrWidth;
+    const y = Math.floor(index / share.qrWidth);
+    ctx.fillRect((x + quietZone) * scale, (y + quietZone) * scale, scale, scale);
+  });
+  return canvas;
+}
+
 function openModal(which: "settings" | "about") {
   state.modalFresh = state.modal === null;
   state.modal = which;
@@ -1815,7 +1948,10 @@ function renderAbout() {
     "div",
     { class: "modal-body about" },
     h("div", { class: "about-head" }, h("img", { class: "about-logo", attrs: { src: "/logo.svg", alt: "" } }), h("div", {}, h("h3", {}, "Ambar"), h("small", { class: "muted" }, `Sürüm ${state.appVersion}`))),
-    h("p", {}, "Ambar; yt-dlp, FFmpeg ve Deno gibi açık kaynak projelerin üzerine kurulu ücretsiz bir arayüzdür. İndirmeyi bu programlar yapar, Ambar onları senin için kolaylaştırır. Bu programlar Ambar'nın içinde gelmez, ilk açılışta resmi kaynaklarından indirilip doğrulanır."),
+    h("p", {}, "Ambar, video ve ses dosyalarını bilgisayarına kaydetmek için ücretsiz, açık kaynak bir masaüstü uygulamasıdır. yt-dlp, FFmpeg ve Deno ilk kurulumda kendi kaynaklarından indirilir ve doğrulanır."),
+    h("h4", {}, "Telefonunla tara"),
+    h("p", {}, "Tamamlanan bir indirmeyi QR kodla aynı yerel ağdaki telefonuna aktarabilirsin. Paylaşım 15 dakika sonra veya pencereyi kapattığında sona erer."),
+    h("div", { class: "component-links" }, linkButton("LoreTube projesi", "https://github.com/tuncaylore/loretube")),
     h("h4", {}, "Kullanım notu"),
     h("ul", { class: "notice-list" }, ...NOTICE_POINTS.map((p) => h("li", {}, p))),
     h("h4", {}, "Bileşenler ve lisanslar"),
@@ -1825,6 +1961,7 @@ function renderAbout() {
       ? component("FFmpeg", "GPL", "Ses ve görüntü dönüştürme. Windows derlemesi Gyan Doshi tarafından gyan.dev'de yayınlanır.", [["ffmpeg.org", "https://ffmpeg.org/"], ["gyan.dev", "https://www.gyan.dev/ffmpeg/builds/"]])
       : component("FFmpeg", "GPL", "Ses ve görüntü dönüştürme. macOS derlemesi Martin Riedl tarafından imzalanarak yayınlanır.", [["ffmpeg.org", "https://ffmpeg.org/"], ["Derleme", "https://ffmpeg.martin-riedl.de/"]]),
     component("Deno", "MIT", "yt-dlp'nin bazı siteler için ihtiyaç duyduğu JavaScript çalıştırıcı.", [["deno.com", "https://deno.com/"]]),
+    component("qrcode", "MIT / Apache-2.0", "Telefonla paylaşım bağlantısının QR kodunu üretir.", [["Kaynak kodu", "https://github.com/kennytm/qrcode-rust"]]),
   );
 }
 

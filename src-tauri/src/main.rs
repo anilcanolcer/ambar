@@ -8,6 +8,7 @@ mod engines;
 mod error;
 mod history;
 mod jobs;
+mod phone_share;
 mod platform;
 mod proc;
 mod settings;
@@ -85,6 +86,7 @@ fn main() {
         // Ambar's own "Güncelle"; the web UI only reaches it through our commands.
         .plugin(tauri_plugin_updater::Builder::new().build())
         .manage(update::UpdateState::default())
+        .manage(phone_share::PhoneShare::default())
         .plugin(tauri_plugin_dialog::init())
         .plugin(tauri_plugin_opener::init())
         .on_menu_event(|app, event| tray::on_menu(app, event.id().as_ref()))
@@ -321,6 +323,8 @@ fn main() {
             commands::save_settings,
             commands::reveal_job_file,
             commands::open_job_file,
+            phone_share::start_phone_share,
+            phone_share::stop_phone_share,
             commands::open_download_dir,
             commands::open_link,
             commands::quit_app,
