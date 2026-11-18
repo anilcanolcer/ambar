@@ -98,4 +98,6 @@ npm run app:build
 
 ## 🤝 Kaynak ve lisans
 
-Ambar, Anılcan Ölçer'in markası ve geliştirmesiyle sürdürülür. Başlangıç kod tabanı [Kova](https://github.com/alpunlu12-commits/kova) projesidir; orijinal telif bildirimi ve MIT lisansı [LICENSE](LICENSE) dosyasında korunur. **Telefonunla tara** akışı [LoreTube](https://github.com/tuncaylore/loretube) projesinden esinlenmiştir. yt-dlp, FFmpeg, Deno, Tauri ve [qrcode](https://github.com/kennytm/qrcode-rust) kendi lisanslarıyla kullanılır.
+Ambar, Anılcan Ölçer tarafından geliştirilen ve sürdürülen MIT lisanslı bir projedir. Başlangıç kodu [Kova](https://github.com/alpunlu12-commits/kova) projesine dayanır. Kova’nın telif bildirimi ve MIT lisansı [LICENSE](LICENSE) dosyasında yer alır.
+
+yt-dlp, FFmpeg, Deno, Tauri ve [qrcode](https://github.com/kennytm/qrcode-rust) kendi lisansları kapsamında kullanılır.
