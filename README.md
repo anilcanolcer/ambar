@@ -2,7 +2,7 @@
 
 # 📦 Ambar
 
-**Medyan senin bilgisayarında.** Bağlantıyı yapıştır, biçimi seç, indir. Ambar; video ve ses içeriklerini bilgisayarına kaydetmek için hazırlanmış, Türkçe, ücretsiz ve açık kaynak bir masaüstü uygulamasıdır.
+**Medyan senin bilgisayarında.** Ambar, Windows ve macOS için Türkçe, ücretsiz ve açık kaynak bir video ve ses indirme uygulamasıdır. Tamamlanan indirmeleri QR kodla aynı yerel ağdaki telefonuna aktarabilirsin.
 
 [⬇️ Son sürümü indir](https://github.com/anilcanolcer/ambar/releases/latest) · [🌐 Ölçer Web Tasarım](https://olcerwebtasarim.com/) · [📋 Sorun bildir](https://github.com/anilcanolcer/ambar/issues)
 
@@ -18,6 +18,7 @@ Vizyonumuz, izinli içeriklerini toplamak isteyen herkesin karmaşık komutlarla
 | 🎵 **Ses** | MP3, M4A, OPUS, FLAC ve WAV seçenekleri |
 | 🎬 **Video** | MP4, MKV ve WEBM seçenekleri; kalite seçimi |
 | 📚 **Düzen** | İndirme kuyruğu, geçmiş, klasör seçimi ve oynatma listeleri |
+| 📱 **Telefonunla tara** | Tamamlanan bir indirmeyi aynı yerel ağdaki telefona QR kodla aktar |
 | 🧰 **Bileşenler** | yt-dlp, FFmpeg ve Deno sürümlerini uygulama içinden yönetme |
 | 🔐 **Güncelleme** | GitHub Releases üzerinden imzalı Ambar sürümlerini denetleme ve kurma |
 
@@ -25,7 +26,20 @@ Kaynak siteye ve içerik türüne göre kullanılabilen özellikler değişebili
 
 ## 🖼️ Uygulamadan görüntüler
 
-Gerçek Windows kurulumundan alınmıştır. Önizleme ve dönüşüm örneğinde [Wikimedia Commons'taki RunningWater](https://commons.wikimedia.org/wiki/File:RunningWater.webm) kullanıldı.
+Telefonla paylaşım görselleri, yerel test ortamında oluşturulan örnek videoyla alındı.
+
+![Ambar'da Telefonunla tara penceresi ve geçici QR kod](assets/screenshots/ambar-phone-share.jpg)
+
+| Telefonda açılan indirme sayfası | Hakkında ve lisanslar |
+| --- | --- |
+| ![Ambar telefon sayfasında Dosyayı indir düğmesi](assets/screenshots/ambar-phone-download.jpg) | ![Ambar Hakkında ekranında telefonla paylaşım bilgisi](assets/screenshots/ambar-about-qr.jpg) |
+
+![İndirilenler listesinde tamamlanan MP4 ve MP3 dosyaları ile Telefonunla tara düğmeleri](assets/screenshots/ambar-downloads-qr.jpg)
+
+<details>
+<summary>Önceki Windows ekran görüntüleri</summary>
+
+Önizleme ve dönüşüm örneğinde [Wikimedia Commons'taki RunningWater](https://commons.wikimedia.org/wiki/File:RunningWater.webm) kullanıldı.
 
 ![Ambar ana ekranı](assets/screenshots/ambar-windows.png)
 
@@ -35,6 +49,8 @@ Gerçek Windows kurulumundan alınmıştır. Önizleme ve dönüşüm örneğind
 | --- | --- |
 | ![Ambar'da indirilen MP4 ve MP3](assets/screenshots/ambar-downloads.png) | ![Ambar güncel durumu](assets/screenshots/ambar-update.png) |
 
+</details>
+
 ## 🚀 Kurulum ve kullanım
 
 1. [Son sürüm](https://github.com/anilcanolcer/ambar/releases/latest) sayfasından Windows için **`Ambar_…_x64-setup.exe`**, macOS için **`Ambar_…_universal.dmg`** dosyasını indir.
@@ -42,6 +58,8 @@ Gerçek Windows kurulumundan alınmıştır. Önizleme ve dönüşüm örneğind
 3. İndirme hakkına sahip olduğun bağlantıyı yapıştır ve **Getir** düğmesine bas.
 4. **Ses** veya **Video** biçimini, varsa kalite ve altyazı seçeneklerini seç; **İndir** düğmesine bas.
 5. Sonuçları **İndirilenler** bölümünden aç veya klasörde göster.
+
+Telefona aktarmak için tamamlanan indirmede **Telefonunla tara** düğmesine bas. Telefonunu bilgisayarla aynı yerel ağa bağla, kamerayla QR kodu tara ve açılan sayfada **Dosyayı indir** seçeneğine dokun. Bağlantıyı elle açmak için **Bağlantıyı kopyala** düğmesini kullanabilirsin. Paylaşım 15 dakika sonra veya paylaşım penceresini kapattığında sona erer. İndirme bitene kadar pencereyi açık tut.
 
 Windows'ta FFmpeg'nin ilk kurulumu yaklaşık 109 MB'lık bir arşiv indirir. Ambar önce FFmpeg derlemesini yayımlayan Gyan Doshi'nin resmî GitHub aynasını kullanır; bağlantı yavaş veya erişilemezse yayıncının sitesini dener. Her iki kaynakta da indirilen dosya yayıncının SHA-256 özetiyle doğrulanır. Bileşen ekranı indirilen miktarı, yüzdeyi ve arşiv açma aşamasını ayrı gösterir.
 
@@ -79,4 +97,4 @@ npm run app:build
 
 ## 🤝 Kaynak ve lisans
 
-Ambar, Anılcan Ölçer'in markası ve geliştirmesiyle sürdürülür. Başlangıç kod tabanı [Kova](https://github.com/alpunlu12-commits/kova) projesidir; orijinal telif bildirimi ve MIT lisansı [LICENSE](LICENSE) dosyasında korunur. yt-dlp, FFmpeg, Deno, Tauri ve diğer bağımlılıkların kendi lisansları geçerlidir.
+Ambar, Anılcan Ölçer'in markası ve geliştirmesiyle sürdürülür. Başlangıç kod tabanı [Kova](https://github.com/alpunlu12-commits/kova) projesidir; orijinal telif bildirimi ve MIT lisansı [LICENSE](LICENSE) dosyasında korunur. **Telefonunla tara** akışı [LoreTube](https://github.com/tuncaylore/loretube) projesinden esinlenmiştir. yt-dlp, FFmpeg, Deno, Tauri ve [qrcode](https://github.com/kennytm/qrcode-rust) kendi lisanslarıyla kullanılır.

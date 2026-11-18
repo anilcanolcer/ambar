@@ -109,6 +109,14 @@ export type MediaInfo = VideoInfo | PlaylistInfo;
 
 export type JobStatus = "queued" | "starting" | "downloading" | "processing" | "done" | "error" | "canceled";
 
+export interface PhoneShare {
+  id: string;
+  url: string;
+  qrWidth: number;
+  qrModules: boolean[];
+  expiresIn: number;
+}
+
 export interface JobView {
   id: number;
   url: string;

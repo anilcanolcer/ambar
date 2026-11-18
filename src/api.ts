@@ -8,6 +8,7 @@ import type {
   JobEvent,
   JobView,
   MediaInfo,
+  PhoneShare,
   Settings,
   UpdateOutcome,
 } from "./types";
@@ -27,6 +28,8 @@ export interface Api {
   saveSettings(settings: Settings): Promise<Settings>;
   revealJobFile(id: number): Promise<void>;
   openJobFile(id: number): Promise<void>;
+  startPhoneShare(id: number): Promise<PhoneShare>;
+  stopPhoneShare(id: string): Promise<void>;
   openDownloadDir(): Promise<void>;
   openLink(url: string): Promise<void>;
   /** Quits Ambar, asking first while downloads are running (Ctrl+Q on Windows). */
@@ -79,6 +82,8 @@ async function tauriApi(): Promise<Api> {
     saveSettings: (settings) => call("save_settings", { settings }),
     revealJobFile: (id) => call("reveal_job_file", { id }),
     openJobFile: (id) => call("open_job_file", { id }),
+    startPhoneShare: (id) => call("start_phone_share", { id }),
+    stopPhoneShare: (id) => call("stop_phone_share", { id }),
     openDownloadDir: () => call("open_download_dir"),
     openLink: (url) => call("open_link", { url }),
     quitApp: () => call("quit_app"),

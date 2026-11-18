@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Ambar · Dosyayı indir</title>
+  <style>
+    :root { color-scheme: light dark; font-family: system-ui, sans-serif; }
+    body { margin: 0; min-height: 100vh; min-height: 100svh; display: grid; place-items: center; background: #f4f6fa; color: #142139; }
+    main { box-sizing: border-box; width: min(calc(100% - 32px), 420px); background: #fff; border: 1px solid #dce3ee; border-radius: 20px; padding: 28px; }
+    h1 { font-size: 1.55rem; margin: 0; }
+    p { overflow-wrap: anywhere; line-height: 1.5; }
+    a { display: block; padding: 14px; border-radius: 10px; text-align: center; background: #2453ce; color: #fff; font-weight: 650; text-decoration: none; }
+    small { display: block; margin-top: 16px; line-height: 1.5; }
+    @media (prefers-color-scheme: dark) {
+      body { background: #121820; color: #eef3ff; }
+      main { background: #1c2634; border-color: #334359; }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>Ambar</h1>
+    <p>{{FILENAME}}</p>
+    <a href="{{DOWNLOAD}}" download>Dosyayı indir</a>
+    <small>İndirme tamamlanana kadar bilgisayarındaki paylaşım penceresini açık tut.</small>
+  </main>
+</body>
+</html>

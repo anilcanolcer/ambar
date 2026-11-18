@@ -278,6 +278,10 @@ export function createMockApi(): Api {
     },
     async revealJobFile() {},
     async openJobFile() {},
+    async startPhoneShare() {
+      throw new Error("Telefonla paylaşım için Ambar masaüstü uygulamasını aç.");
+    },
+    async stopPhoneShare() {},
     async openDownloadDir() {},
     async openLink(url) {
       window.open(url, "_blank", "noopener");

@@ -14,5 +14,7 @@
        in the browser. -->
   <key>NSAppleEventsUsageDescription</key>
   <string>Ambar, menü çubuğundan indirirken tarayıcında açık olan videonun adresini okur.</string>
+  <key>NSLocalNetworkUsageDescription</key>
+  <string>Ambar, seçtiğin indirmeyi Telefonunla Tara özelliğiyle aynı ağdaki telefonuna gönderir.</string>
 </dict>
 </plist>
