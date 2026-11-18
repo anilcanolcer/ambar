@@ -79,6 +79,7 @@ Tauri güncelleme imzası, Windows/macOS işletim sistemi kod imzalama sertifika
 - Wikimedia Commons örneği MP3 ve MP4 olarak indirildi. MP4 dosyası H.264 video ve AAC ses içeriyor; FFmpeg ile hatasız çözümlendi.
 - Windows ve macOS paketleri GitHub Actions'da üretildi; `latest.json` her iki platformun Tauri güncelleme imzalarını içeriyor.
 - FFmpeg'nin resmî GitHub aynasındaki dosya ve 1 MB'lık örnek indirme doğrulandı. Diğer bilgisayardaki ilk kurulumun daha hızlı tamamlandığı kullanıcı tarafından bildirildi; farklı ağlardaki hız değişebilir.
+- Yerel örnek video Ambar ile MP4 ve MP3 olarak indirildi. QR kod okunarak mobil indirme sayfası açıldı ve aktarılan dosyanın SHA-256 özeti kaynakla eşleşti.
 - macOS paketi derlendi ve yayımlandı. Bu Windows bilgisayarda macOS kullanım testi yapılamadı; Apple noter onayı henüz yapılandırılmadı.
 
 Kısa bir örneğin süresi veya hızı, farklı sitelerdeki indirme ve dönüşüm performansı için genel garanti değildir.
